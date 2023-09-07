@@ -25,4 +25,12 @@ public class Medic {
     private Specialty specialty;
     @Embedded
     private Address address;
+
+    public Medic(MedicalRegistrationData medicalRegistrationData) {
+        this.name = medicalRegistrationData.name();
+        this.email = medicalRegistrationData.email();
+        this.document = medicalRegistrationData.document();
+        this.specialty = medicalRegistrationData.specialty();
+        this.address = new Address(medicalRegistrationData.address());
+    }
 }

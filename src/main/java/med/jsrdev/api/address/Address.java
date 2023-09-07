@@ -15,4 +15,12 @@ public class Address {
     private String city;
     private Integer number;
     private String complement;
+
+    public Address(AddressData address) {
+        this.street = address.street();
+        this.district = address.district();
+        this.city = address.city();
+        this.number = address.number();
+        this.complement = address.complement();
+    }
 }

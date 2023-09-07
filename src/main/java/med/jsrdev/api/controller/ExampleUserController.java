@@ -14,4 +14,9 @@ public class ExampleUserController {
         System.out.println("Request User llegó correctamente");
         users.forEach(System.out::println);
     }
+
+    @GetMapping
+    public String helloTwo() {
+        return "hello Request User";
+    }
 }

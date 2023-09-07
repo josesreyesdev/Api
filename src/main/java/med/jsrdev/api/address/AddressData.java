@@ -1,3 +1,17 @@
 package med.jsrdev.api.address;
 
-public record AddressData(String street, String district, String city, int number, String complement) { }
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record AddressData(
+        @NotBlank
+        String street,
+        @NotBlank
+        String district,
+        @NotBlank
+        String city,
+        @NotNull
+        Integer number,
+        @NotBlank
+        String complement
+) { }

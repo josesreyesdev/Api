@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/medics")
 public class MedicController {
 
-    @Autowired //No es recomendable usarlo para fines de testing
+    @Autowired //No es recomendable usarlo para fines de testing y sirve para
+    // inyeccion automatica de una dependencia, de lo contrario hay que crear el objeto
     private MedicRepository medicRepository;
 
     //registrar medico

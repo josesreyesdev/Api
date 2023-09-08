@@ -1,8 +1,31 @@
 package med.jsrdev.api.user;
 
-public record User(
-        Integer userId,
-        Long id,
-        String title,
-        String body
-) { }
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@SuppressWarnings("all")
+@Table(name="users")
+@Entity(name = "User")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of="id")
+public class User {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        Long id;
+        @Column(name="user_id")
+        Integer userId;
+        String title;
+        String body;
+
+        public User(UserRegistrationData user) {
+                this.id = user.id();
+                this.userId = user.userId();
+                this.title = user.title();
+                this.body = user.body();
+        }
+}

@@ -3,21 +3,36 @@ package med.jsrdev.api.controller;
 import jakarta.validation.Valid;
 import med.jsrdev.api.medic.Medic;
 import med.jsrdev.api.medic.MedicRepository;
+import med.jsrdev.api.medic.MedicalDataList;
 import med.jsrdev.api.medic.MedicalRegistrationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/medics")
 public class MedicController {
 
-    @Autowired //No es recomendable usarlo para fines de testing y sirve para
-    // inyeccion automatica de una dependencia, de lo contrario hay que crear el objeto
+    @Autowired
     private MedicRepository medicRepository;
 
-    //registrar medico
-    @PostMapping
-    public void registerPhysician(@RequestBody @Valid MedicalRegistrationData medicalRegistrationData) {
+    //register medic
+    /*@PostMapping
+    public void registerMedic(@RequestBody @Valid MedicalRegistrationData medicalRegistrationData) {
         medicRepository.save(new Medic(medicalRegistrationData));
+    } */
+
+    @PostMapping
+    public void registerMedicList(@RequestBody @Valid List<MedicalRegistrationData> medicList) {
+        medicList.forEach(medic -> medicRepository.save(new Medic(medic)));
+    }
+
+    @GetMapping
+    public Page<MedicalDataList> medicList(@PageableDefault(size = 4) Pageable pagination)  {
+        return medicRepository.findAll(pagination).map(MedicalDataList::new);
     }
 }

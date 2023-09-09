@@ -8,6 +8,7 @@ import med.jsrdev.api.medic.MedicalRegistrationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,18 @@ public class MedicController {
     private MedicRepository medicRepository;
 
     //register medic
-    @PostMapping
+    /*@PostMapping
     public void registerMedic(@RequestBody @Valid MedicalRegistrationData medicalRegistrationData) {
         medicRepository.save(new Medic(medicalRegistrationData));
+    } */
+
+    @PostMapping
+    public void registerMedicList(@RequestBody @Valid List<MedicalRegistrationData> medicList) {
+        medicList.forEach(medic -> medicRepository.save(new Medic(medic)));
     }
 
     @GetMapping
-    public Page<MedicalDataList> medicList(Pageable pagination)  {
+    public Page<MedicalDataList> medicList(@PageableDefault(size = 4) Pageable pagination)  {
         return medicRepository.findAll(pagination).map(MedicalDataList::new);
     }
 }

@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String helloTwo() {
-        return "hello Request User";
+    public List<User> userList() {
+        return userRepository.findAll();
     }
 }

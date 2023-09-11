@@ -22,18 +22,18 @@ public class PatientController {
 
     @PostMapping("/register")
     @Transactional
-    public void register(@RequestBody @Valid PatientRegistrationData data) {
+    public void addPatient(@RequestBody @Valid PatientRegistrationData data) {
         patientRepository.save(new Patient(data));
     }
 
     @PostMapping("/register-patients")
     @Transactional
-    public void registerPatient(@RequestBody @Valid List<PatientRegistrationData> patients) {
+    public void addPatientList(@RequestBody @Valid List<PatientRegistrationData> patients) {
         patients.forEach(patient -> patientRepository.save(new Patient(patient)));
     }
 
     @GetMapping
-    public Page<PatientDataList> patientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
+    public Page<PatientDataList> getPatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
         return patientRepository.findAll(pagination).map(PatientDataList::new);
     }
 }

@@ -22,13 +22,13 @@ public class UserController {
 
     @PostMapping("/register")
     @Transactional
-    public void register(@RequestBody @Valid UserRegistrationData user) {
+    public void addUser(@RequestBody @Valid UserRegistrationData user) {
         userRepository.save(new User(user));
     }
 
     @PostMapping("/register-users")
     @Transactional
-    public void registerUser(@RequestBody @Valid List<UserRegistrationData> users) {
+    public void addUserList(@RequestBody @Valid List<UserRegistrationData> users) {
         users.forEach(user -> userRepository.save(new User(user)));
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     } */
 
     @GetMapping
-    public Page<UserDataList> userList(Pageable page) {
+    public Page<UserDataList> getUserList(Pageable page) {
         return userRepository.findAll(page).map(UserDataList::new);
     }
 }

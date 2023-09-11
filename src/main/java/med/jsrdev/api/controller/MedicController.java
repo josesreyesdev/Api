@@ -24,18 +24,23 @@ public class MedicController {
     //register medic
     @PostMapping("/register")
     @Transactional
-    public void registerMedic(@RequestBody @Valid MedicalRegistrationData medic) {
+    public void addMedic(@RequestBody @Valid MedicalRegistrationData medic) {
         medicRepository.save(new Medic(medic));
     }
 
     @PostMapping("/register-medics")
     @Transactional
-    public void registerMedicList(@RequestBody @Valid List<MedicalRegistrationData> medicList) {
+    public void addMedicList(@RequestBody @Valid List<MedicalRegistrationData> medicList) {
         medicList.forEach(medic -> medicRepository.save(new Medic(medic)));
     }
 
     @GetMapping
-    public Page<MedicalDataList> medicList(@PageableDefault(size = 4) Pageable pagination)  {
+    public Page<MedicalDataList> getMedicList(@PageableDefault(size = 4) Pageable pagination)  {
         return medicRepository.findAll(pagination).map(MedicalDataList::new);
+    }
+
+    @PutMapping
+    public void updateMedic() {
+
     }
 }

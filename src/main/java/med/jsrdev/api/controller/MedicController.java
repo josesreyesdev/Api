@@ -2,10 +2,7 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.medic.Medic;
-import med.jsrdev.api.medic.MedicRepository;
-import med.jsrdev.api.medic.MedicalDataList;
-import med.jsrdev.api.medic.MedicalRegistrationData;
+import med.jsrdev.api.medic.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,24 +20,25 @@ public class MedicController {
 
     //register medic
     @PostMapping("/register")
-    @Transactional
-    public void addMedic(@RequestBody @Valid MedicalRegistrationData medic) {
+    public void addMedic(@RequestBody @Valid AddMedicData medic) {
         medicRepository.save(new Medic(medic));
     }
 
     @PostMapping("/register-medics")
-    @Transactional
-    public void addMedicList(@RequestBody @Valid List<MedicalRegistrationData> medicList) {
+    public void addMedicList(@RequestBody @Valid List<AddMedicData> medicList) {
         medicList.forEach(medic -> medicRepository.save(new Medic(medic)));
     }
 
     @GetMapping
-    public Page<MedicalDataList> getMedicList(@PageableDefault(size = 4) Pageable pagination)  {
-        return medicRepository.findAll(pagination).map(MedicalDataList::new);
+    public Page<GetMedicalDataList> getMedicList(@PageableDefault(size = 4) Pageable pagination)  {
+        return medicRepository.findAll(pagination).map(GetMedicalDataList::new);
     }
 
     @PutMapping
-    public void updateMedic() {
+    @Transactional
+    public void updateMedic(@RequestBody @Valid UpdateMedicData updateMedic) {
+        Medic medic = medicRepository.getReferenceById(updateMedic.id());
 
+        medic.updateMedic(updateMedic);
     }
 }

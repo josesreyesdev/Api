@@ -3,7 +3,7 @@ package med.jsrdev.api.user;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UserRegistrationData(
+public record AddUserData(
         @NotNull
         Long id,
         @NotNull

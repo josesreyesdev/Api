@@ -22,7 +22,7 @@ public class User {
         String title;
         String body;
 
-        public User(UserRegistrationData user) {
+        public User(AddUserData user) {
                 this.id = user.id();
                 this.userId = user.userId();
                 this.title = user.title();

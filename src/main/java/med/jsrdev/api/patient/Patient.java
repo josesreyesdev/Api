@@ -27,7 +27,7 @@ public class Patient {
     @Embedded
     private AddressPatient address;
 
-    public Patient(PatientRegistrationData patient) {
+    public Patient(AddPatientData patient) {
         this.name = patient.name();
         this.email = patient.email();
         this.identityDocument = patient.identityDocument();

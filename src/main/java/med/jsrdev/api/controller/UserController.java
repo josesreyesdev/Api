@@ -3,8 +3,8 @@ package med.jsrdev.api.controller;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.jsrdev.api.user.User;
-import med.jsrdev.api.user.UserDataList;
-import med.jsrdev.api.user.UserRegistrationData;
+import med.jsrdev.api.user.GetUserDataList;
+import med.jsrdev.api.user.AddUserData;
 import med.jsrdev.api.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,13 +22,13 @@ public class UserController {
 
     @PostMapping("/register")
     @Transactional
-    public void addUser(@RequestBody @Valid UserRegistrationData user) {
+    public void addUser(@RequestBody @Valid AddUserData user) {
         userRepository.save(new User(user));
     }
 
     @PostMapping("/register-users")
     @Transactional
-    public void addUserList(@RequestBody @Valid List<UserRegistrationData> users) {
+    public void addUserList(@RequestBody @Valid List<AddUserData> users) {
         users.forEach(user -> userRepository.save(new User(user)));
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     } */
 
     @GetMapping
-    public Page<UserDataList> getUserList(Pageable page) {
-        return userRepository.findAll(page).map(UserDataList::new);
+    public Page<GetUserDataList> getUserList(Pageable page) {
+        return userRepository.findAll(page).map(GetUserDataList::new);
     }
 }

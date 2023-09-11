@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.jsrdev.api.address.Address;
+import med.jsrdev.api.address.AddressMedic;
 
 @SuppressWarnings("all")
 @Table(name="medics")
@@ -25,14 +25,14 @@ public class Medic {
     @Enumerated(EnumType.STRING)
     private Specialty specialty;
     @Embedded
-    private Address address;
+    private AddressMedic address;
 
-    public Medic(MedicalRegistrationData medicalRegistrationData) {
-        this.name = medicalRegistrationData.name();
-        this.email = medicalRegistrationData.email();
-        this.phone = medicalRegistrationData.phone();
-        this.document = medicalRegistrationData.document();
-        this.specialty = medicalRegistrationData.specialty();
-        this.address = new Address(medicalRegistrationData.address());
+    public Medic(MedicalRegistrationData medic) {
+        this.name = medic.name();
+        this.email = medic.email();
+        this.phone = medic.phone();
+        this.document = medic.document();
+        this.specialty = medic.specialty();
+        this.address = new AddressMedic(medic.address());
     }
 }

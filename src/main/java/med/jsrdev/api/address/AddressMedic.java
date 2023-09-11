@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+public class AddressMedic {
     private String street;
     private String district;
     private String city;
     private Integer number;
     private String complement;
 
-    public Address(AddressData address) {
+    public AddressMedic(MedicAddressData address) {
         this.street = address.street();
         this.district = address.district();
         this.city = address.city();

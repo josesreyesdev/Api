@@ -2,10 +2,7 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.patient.Patient;
-import med.jsrdev.api.patient.GetPatientDataList;
-import med.jsrdev.api.patient.AddPatientData;
-import med.jsrdev.api.patient.PatientRepository;
+import med.jsrdev.api.patient.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,5 +32,13 @@ public class PatientController {
     @GetMapping
     public Page<GetPatientDataList> getPatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
         return patientRepository.findAll(pagination).map(GetPatientDataList::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void updatePatient( @RequestBody @Valid UpdatePatientData updatePatient) {
+        Patient patient = patientRepository.getReferenceById(updatePatient.id());
+
+        patient.updatePatient(updatePatient);
     }
 }

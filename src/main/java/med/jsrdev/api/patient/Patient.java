@@ -34,4 +34,16 @@ public class Patient {
         this.phone = patient.phone();
         this.address = new AddressPatient(patient.address());
     }
+
+    public void updatePatient(UpdatePatientData updatePatient) {
+        if (updatePatient.name() != null) {
+            this.name = updatePatient.name();
+        }
+        if (updatePatient.identityDocument() != null) {
+            this.identityDocument = updatePatient.identityDocument();
+        }
+        if (updatePatient.address() != null) {
+            this.address = address.updateAddress(updatePatient.address());
+        }
+    }
 }

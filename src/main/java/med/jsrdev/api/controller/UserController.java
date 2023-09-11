@@ -1,5 +1,6 @@
 package med.jsrdev.api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.jsrdev.api.user.User;
 import med.jsrdev.api.user.UserDataList;
@@ -19,7 +20,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping
+    @PostMapping("/register")
+    @Transactional
+    public void register(@RequestBody @Valid UserRegistrationData user) {
+        userRepository.save(new User(user));
+    }
+
+    @PostMapping("/register-users")
+    @Transactional
     public void registerUser(@RequestBody @Valid List<UserRegistrationData> users) {
         users.forEach(user -> userRepository.save(new User(user)));
     }

@@ -20,13 +20,13 @@ public class PatientController {
     @Autowired
     private PatientRepository patientRepository;
 
-    /*@PostMapping
+    @PostMapping("/register")
     @Transactional
     public void register(@RequestBody @Valid PatientRegistrationData data) {
         patientRepository.save(new Patient(data));
-    } */
+    }
 
-    @PostMapping
+    @PostMapping("/register-patients")
     @Transactional
     public void registerPatient(@RequestBody @Valid List<PatientRegistrationData> patients) {
         patients.forEach(patient -> patientRepository.save(new Patient(patient)));

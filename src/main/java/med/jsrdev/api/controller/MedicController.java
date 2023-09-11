@@ -1,5 +1,6 @@
 package med.jsrdev.api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.jsrdev.api.medic.Medic;
 import med.jsrdev.api.medic.MedicRepository;
@@ -21,12 +22,14 @@ public class MedicController {
     private MedicRepository medicRepository;
 
     //register medic
-    /*@PostMapping
-    public void registerMedic(@RequestBody @Valid MedicalRegistrationData medicalRegistrationData) {
-        medicRepository.save(new Medic(medicalRegistrationData));
-    } */
+    @PostMapping("/register")
+    @Transactional
+    public void registerMedic(@RequestBody @Valid MedicalRegistrationData medic) {
+        medicRepository.save(new Medic(medic));
+    }
 
-    @PostMapping
+    @PostMapping("/register-medics")
+    @Transactional
     public void registerMedicList(@RequestBody @Valid List<MedicalRegistrationData> medicList) {
         medicList.forEach(medic -> medicRepository.save(new Medic(medic)));
     }

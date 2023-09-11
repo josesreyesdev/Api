@@ -26,8 +26,10 @@ public class Patient {
     private String phone;
     @Embedded
     private AddressPatient address;
+    private Boolean active;
 
     public Patient(AddPatientData patient) {
+        this.active = true;
         this.name = patient.name();
         this.email = patient.email();
         this.identityDocument = patient.identityDocument();
@@ -45,5 +47,9 @@ public class Patient {
         if (updatePatient.address() != null) {
             this.address = address.updateAddress(updatePatient.address());
         }
+    }
+
+    public void deactivePatient() {
+        this.active = false;
     }
 }

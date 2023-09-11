@@ -29,9 +29,16 @@ public class PatientController {
         patients.forEach(patient -> patientRepository.save(new Patient(patient)));
     }
 
+    //Get all patients
     @GetMapping
     public Page<GetPatientDataList> getPatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
         return patientRepository.findAll(pagination).map(GetPatientDataList::new);
+    }
+
+    //Get Active Patients
+    @GetMapping("/get-active-patients")
+    public Page<GetPatientDataList> getActivePatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
+        return patientRepository.findByActiveTrue(pagination).map(GetPatientDataList::new);
     }
 
     @PutMapping
@@ -40,5 +47,12 @@ public class PatientController {
         Patient patient = patientRepository.getReferenceById(updatePatient.id());
 
         patient.updatePatient(updatePatient);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deletePatient(@RequestBody @Valid@PathVariable Long id) {
+        Patient patient = patientRepository.getReferenceById(id);
+        patient.deactivePatient();
     }
 }

@@ -1,10 +1,8 @@
 package med.jsrdev.api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.user.User;
-import med.jsrdev.api.user.UserDataList;
-import med.jsrdev.api.user.UserRegistrationData;
-import med.jsrdev.api.user.UserRepository;
+import med.jsrdev.api.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +17,15 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping
-    public void registerUser(@RequestBody @Valid List<UserRegistrationData> users) {
+    @PostMapping("/register")
+    @Transactional
+    public void addUser(@RequestBody @Valid AddUserData user) {
+        userRepository.save(new User(user));
+    }
+
+    @PostMapping("/register-users")
+    @Transactional
+    public void addUserList(@RequestBody @Valid List<AddUserData> users) {
         users.forEach(user -> userRepository.save(new User(user)));
     }
 
@@ -30,7 +35,15 @@ public class UserController {
     } */
 
     @GetMapping
-    public Page<UserDataList> userList(Pageable page) {
-        return userRepository.findAll(page).map(UserDataList::new);
+    public Page<GetUserDataList> getUserList(Pageable page) {
+        return userRepository.findAll(page).map(GetUserDataList::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void updateUser(@RequestBody @Valid UpdateUserData updateUser) {
+        User user = userRepository.getReferenceById(updateUser.id());
+
+        user.updateUser(updateUser);
     }
 }

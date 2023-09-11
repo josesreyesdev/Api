@@ -27,11 +27,23 @@ public class Patient {
     @Embedded
     private AddressPatient address;
 
-    public Patient(PatientRegistrationData patient) {
+    public Patient(AddPatientData patient) {
         this.name = patient.name();
         this.email = patient.email();
         this.identityDocument = patient.identityDocument();
         this.phone = patient.phone();
         this.address = new AddressPatient(patient.address());
+    }
+
+    public void updatePatient(UpdatePatientData updatePatient) {
+        if (updatePatient.name() != null) {
+            this.name = updatePatient.name();
+        }
+        if (updatePatient.identityDocument() != null) {
+            this.identityDocument = updatePatient.identityDocument();
+        }
+        if (updatePatient.address() != null) {
+            this.address = address.updateAddress(updatePatient.address());
+        }
     }
 }

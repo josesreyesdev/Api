@@ -22,10 +22,19 @@ public class User {
         String title;
         String body;
 
-        public User(UserRegistrationData user) {
+        public User(AddUserData user) {
                 this.id = user.id();
                 this.userId = user.userId();
                 this.title = user.title();
                 this.body = user.body();
+        }
+
+        public void updateUser(UpdateUserData updateUser) {
+                if (updateUser.title() != null) {
+                        this.title = updateUser.title();
+                }
+                if (updateUser.body() != null) {
+                        this.body = updateUser.body();
+                }
         }
 }

@@ -30,4 +30,15 @@ public class AddressPatient {
         this.postalCode = address.postalCode();
         this.province = address.province();
     }
+
+    public AddressPatient updateAddress(PatientAddressData address) {
+        this.district = address.district();
+        this.city = address.city();
+        this.number = address.number();
+        this.complement = address.complement();
+        this.urbanization = address.urbanization();
+        this.postalCode = address.postalCode();
+        this.province = address.province();
+        return this;
+    }
 }

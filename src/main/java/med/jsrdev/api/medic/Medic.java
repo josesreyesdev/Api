@@ -27,12 +27,24 @@ public class Medic {
     @Embedded
     private AddressMedic address;
 
-    public Medic(MedicalRegistrationData medic) {
+    public Medic(AddMedicData medic) {
         this.name = medic.name();
         this.email = medic.email();
         this.phone = medic.phone();
         this.document = medic.document();
         this.specialty = medic.specialty();
         this.address = new AddressMedic(medic.address());
+    }
+
+    public void updateMedic(UpdateMedicData updateMedic) {
+        if (updateMedic.name() != null) {
+            this.name = updateMedic.name();
+        }
+        if (updateMedic.document() != null) {
+            this.document = updateMedic.document();
+        }
+        if (updateMedic.address() != null) {
+            this.address = address.updateAddress(updateMedic.address());
+        }
     }
 }

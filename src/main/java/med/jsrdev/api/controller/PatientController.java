@@ -2,10 +2,7 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.patient.Patient;
-import med.jsrdev.api.patient.PatientDataList;
-import med.jsrdev.api.patient.PatientRegistrationData;
-import med.jsrdev.api.patient.PatientRepository;
+import med.jsrdev.api.patient.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,20 +17,28 @@ public class PatientController {
     @Autowired
     private PatientRepository patientRepository;
 
-    /*@PostMapping
+    @PostMapping("/register")
     @Transactional
-    public void register(@RequestBody @Valid PatientRegistrationData data) {
+    public void addPatient(@RequestBody @Valid AddPatientData data) {
         patientRepository.save(new Patient(data));
-    } */
+    }
 
-    @PostMapping
+    @PostMapping("/register-patients")
     @Transactional
-    public void registerPatient(@RequestBody @Valid List<PatientRegistrationData> patients) {
+    public void addPatientList(@RequestBody @Valid List<AddPatientData> patients) {
         patients.forEach(patient -> patientRepository.save(new Patient(patient)));
     }
 
     @GetMapping
-    public Page<PatientDataList> patientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
-        return patientRepository.findAll(pagination).map(PatientDataList::new);
+    public Page<GetPatientDataList> getPatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
+        return patientRepository.findAll(pagination).map(GetPatientDataList::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void updatePatient( @RequestBody @Valid UpdatePatientData updatePatient) {
+        Patient patient = patientRepository.getReferenceById(updatePatient.id());
+
+        patient.updatePatient(updatePatient);
     }
 }

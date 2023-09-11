@@ -28,4 +28,13 @@ public class User {
                 this.title = user.title();
                 this.body = user.body();
         }
+
+        public void updateUser(UpdateUserData updateUser) {
+                if (updateUser.title() != null) {
+                        this.title = updateUser.title();
+                }
+                if (updateUser.body() != null) {
+                        this.body = updateUser.body();
+                }
+        }
 }

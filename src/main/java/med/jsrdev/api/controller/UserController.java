@@ -2,10 +2,7 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.user.User;
-import med.jsrdev.api.user.GetUserDataList;
-import med.jsrdev.api.user.AddUserData;
-import med.jsrdev.api.user.UserRepository;
+import med.jsrdev.api.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,5 +37,13 @@ public class UserController {
     @GetMapping
     public Page<GetUserDataList> getUserList(Pageable page) {
         return userRepository.findAll(page).map(GetUserDataList::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void updateUser(@RequestBody @Valid UpdateUserData updateUser) {
+        User user = userRepository.getReferenceById(updateUser.id());
+
+        user.updateUser(updateUser);
     }
 }

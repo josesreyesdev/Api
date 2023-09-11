@@ -29,16 +29,38 @@ public class MedicController {
         medicList.forEach(medic -> medicRepository.save(new Medic(medic)));
     }
 
+    // Get all medics
     @GetMapping
     public Page<GetMedicalDataList> getMedicList(@PageableDefault(size = 4) Pageable pagination)  {
         return medicRepository.findAll(pagination).map(GetMedicalDataList::new);
+    }
+
+    // Get all medics active
+    @GetMapping("/get-active")
+    public Page<GetMedicalDataList> getActiveMedicList(@PageableDefault(size = 4) Pageable pagination)  {
+        return medicRepository.findByActiveTrue(pagination).map(GetMedicalDataList::new);
     }
 
     @PutMapping
     @Transactional
     public void updateMedic(@RequestBody @Valid UpdateMedicData updateMedic) {
         Medic medic = medicRepository.getReferenceById(updateMedic.id());
-
         medic.updateMedic(updateMedic);
+    }
+
+    //Delete en BD => no recomendable, hay que tener un historico
+    @DeleteMapping("/delete-in-db/{id}")
+    @Transactional
+    public void deleteLogicMedic(@PathVariable Long id) {
+        Medic medic = medicRepository.getReferenceById(id);
+        medicRepository.delete(medic);
+    }
+
+    //Delete logic or exclusion logic
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deactivateMedic(@PathVariable Long id) {
+        Medic medic = medicRepository.getReferenceById(id);
+        medic.deactiveMedic();
     }
 }

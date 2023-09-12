@@ -2,7 +2,6 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.medic.GetMedicalDataList;
 import med.jsrdev.api.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

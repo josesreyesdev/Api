@@ -16,17 +16,20 @@ import lombok.NoArgsConstructor;
 public class User {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        Long id;
+        private Long id;
         @Column(name="user_id")
-        Integer userId;
-        String title;
-        String body;
+        private Integer userId;
+        private String title;
+        private String body;
+        private Boolean active;
+
 
         public User(AddUserData user) {
                 this.id = user.id();
                 this.userId = user.userId();
                 this.title = user.title();
                 this.body = user.body();
+                this.active = true;
         }
 
         public void updateUser(UpdateUserData updateUser) {
@@ -36,5 +39,9 @@ public class User {
                 if (updateUser.body() != null) {
                         this.body = updateUser.body();
                 }
+        }
+
+        public void deactivateUser() {
+                this.active = false;
         }
 }

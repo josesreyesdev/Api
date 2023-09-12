@@ -6,6 +6,7 @@ import med.jsrdev.api.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,16 +35,30 @@ public class UserController {
         return userRepository.findAll().stream().map(UserDataList::new).toList();
     } */
 
+    // Get All Users
     @GetMapping
     public Page<GetUserDataList> getUserList(Pageable page) {
         return userRepository.findAll(page).map(GetUserDataList::new);
+    }
+
+    //Get Active Users
+
+    @GetMapping("/get-active")
+    public Page<GetUserDataList> getActiveUserList(@PageableDefault(size = 4) Pageable pagination)  {
+        return userRepository.findByActiveTrue(pagination).map(GetUserDataList::new);
     }
 
     @PutMapping
     @Transactional
     public void updateUser(@RequestBody @Valid UpdateUserData updateUser) {
         User user = userRepository.getReferenceById(updateUser.id());
-
         user.updateUser(updateUser);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteUser(@RequestBody @Valid @PathVariable Long id) {
+        User user  = userRepository.getReferenceById(id);
+        user.deactivateUser();
     }
 }

@@ -27,7 +27,10 @@ public class Medic {
     @Embedded
     private AddressMedic address;
 
+    private Boolean active;
+
     public Medic(AddMedicData medic) {
+        this.active = true;
         this.name = medic.name();
         this.email = medic.email();
         this.phone = medic.phone();
@@ -46,5 +49,9 @@ public class Medic {
         if (updateMedic.address() != null) {
             this.address = address.updateAddress(updateMedic.address());
         }
+    }
+
+    public void deactiveMedic() {
+        this.active = false;
     }
 }

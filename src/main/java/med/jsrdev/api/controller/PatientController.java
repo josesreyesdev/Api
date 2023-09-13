@@ -2,11 +2,13 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import med.jsrdev.api.address.PatientAddressData;
 import med.jsrdev.api.patient.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,16 +45,32 @@ public class PatientController {
 
     @PutMapping
     @Transactional
-    public void updatePatient( @RequestBody @Valid UpdatePatientData updatePatient) {
+    public ResponseEntity<PatientDataResponse> updatePatient( @RequestBody @Valid UpdatePatientData updatePatient) {
         Patient patient = patientRepository.getReferenceById(updatePatient.id());
-
         patient.updatePatient(updatePatient);
+
+        return ResponseEntity.ok(
+                new PatientDataResponse(
+                        patient.getId(), patient.getName(), patient.getEmail(),
+                        patient.getIdentityDocument(), patient.getPhone(),
+                        new PatientAddressData(
+                                patient.getAddress().getUrbanization(),
+                                patient.getAddress().getDistrict(),
+                                patient.getAddress().getPostalCode(),
+                                patient.getAddress().getComplement(),
+                                patient.getAddress().getNumber(),
+                                patient.getAddress().getProvince(),
+                                patient.getAddress().getCity()
+                        )
+                )
+        );
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deletePatient(@RequestBody @Valid@PathVariable Long id) {
+    public ResponseEntity<Void> deletePatient(@RequestBody @Valid@PathVariable Long id) {
         Patient patient = patientRepository.getReferenceById(id);
         patient.deactivePatient();
+        return ResponseEntity.noContent().build();
     }
 }

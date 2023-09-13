@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,15 +51,21 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    public void updateUser(@RequestBody @Valid UpdateUserData updateUser) {
+    public ResponseEntity<UserDataResponse> updateUser(@RequestBody @Valid UpdateUserData updateUser) {
         User user = userRepository.getReferenceById(updateUser.id());
         user.updateUser(updateUser);
+
+        return ResponseEntity.ok(
+                new UserDataResponse(user.getId(), user.getTitle(), user.getBody())
+        );
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deleteUser(@RequestBody @Valid @PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@RequestBody @Valid @PathVariable Long id) {
         User user  = userRepository.getReferenceById(id);
         user.deactivateUser();
+
+        return ResponseEntity.noContent().build();
     }
 }

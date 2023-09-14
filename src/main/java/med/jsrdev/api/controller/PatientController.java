@@ -2,13 +2,17 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import med.jsrdev.api.address.PatientAddressData;
 import med.jsrdev.api.patient.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,40 +23,75 @@ public class PatientController {
 
     @PostMapping("/register")
     @Transactional
-    public void addPatient(@RequestBody @Valid AddPatientData data) {
-        patientRepository.save(new Patient(data));
+    public ResponseEntity<PatientDataResponse> addPatient(@RequestBody @Valid AddPatientData data, UriComponentsBuilder uri) {
+        Patient patient = patientRepository.save(new Patient(data));
+
+        URI url = uri.path("/patients/register/{id}").buildAndExpand(patient.getId()).toUri();
+        return ResponseEntity.created(url).body(responsePatientData(patient));
+    }
+
+    // Metodo que retorna los datos ingresados para un registro
+    @GetMapping("/register/{id}")
+    public ResponseEntity<PatientDataResponse> returnPatientData(@PathVariable Long id) {
+        Patient patient = patientRepository.getReferenceById(id);
+
+        return ResponseEntity.ok(responsePatientData(patient));
     }
 
     @PostMapping("/register-patients")
     @Transactional
-    public void addPatientList(@RequestBody @Valid List<AddPatientData> patients) {
-        patients.forEach(patient -> patientRepository.save(new Patient(patient)));
+    public ResponseEntity<PatientDataResponse> addPatientList(@RequestBody @Valid List<AddPatientData> patients, UriComponentsBuilder uri) {
+        for (AddPatientData addPatient: patients) {
+            Patient patient = patientRepository.save(new Patient(addPatient));
+
+            URI url = uri.path("/patients/register-patients/{id}").buildAndExpand(patient.getId()).toUri();
+            return ResponseEntity.created(url).body( responsePatientData( patient));
+        }
+        return null;
     }
 
     //Get all patients
     @GetMapping
-    public Page<GetPatientDataList> getPatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
-        return patientRepository.findAll(pagination).map(GetPatientDataList::new);
+    public ResponseEntity<Page<GetPatientDataList>> getPatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
+        return ResponseEntity.ok(patientRepository.findAll(pagination).map(GetPatientDataList::new));
     }
 
     //Get Active Patients
     @GetMapping("/get-active-patients")
-    public Page<GetPatientDataList> getActivePatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
-        return patientRepository.findByActiveTrue(pagination).map(GetPatientDataList::new);
+    public ResponseEntity<Page<GetPatientDataList>> getActivePatientList(@PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pagination)  {
+        return ResponseEntity.ok(patientRepository.findByActiveTrue(pagination).map(GetPatientDataList::new));
     }
 
     @PutMapping
     @Transactional
-    public void updatePatient( @RequestBody @Valid UpdatePatientData updatePatient) {
+    public ResponseEntity<PatientDataResponse> updatePatient( @RequestBody @Valid UpdatePatientData updatePatient) {
         Patient patient = patientRepository.getReferenceById(updatePatient.id());
-
         patient.updatePatient(updatePatient);
+
+        return ResponseEntity.ok( responsePatientData(patient));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deletePatient(@RequestBody @Valid@PathVariable Long id) {
+    public ResponseEntity<Void> deletePatient(@RequestBody @Valid@PathVariable Long id) {
         Patient patient = patientRepository.getReferenceById(id);
         patient.deactivePatient();
+        return ResponseEntity.noContent().build();
+    }
+
+    private PatientDataResponse responsePatientData( Patient patient) {
+        return new PatientDataResponse(
+                patient.getId(), patient.getName(), patient.getEmail(),
+                patient.getIdentityDocument(), patient.getPhone(),
+                new PatientAddressData(
+                        patient.getAddress().getUrbanization(),
+                        patient.getAddress().getDistrict(),
+                        patient.getAddress().getPostalCode(),
+                        patient.getAddress().getComplement(),
+                        patient.getAddress().getNumber(),
+                        patient.getAddress().getProvince(),
+                        patient.getAddress().getCity()
+                )
+        );
     }
 }

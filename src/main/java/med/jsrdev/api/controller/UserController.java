@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,14 +23,35 @@ public class UserController {
 
     @PostMapping("/register")
     @Transactional
-    public void addUser(@RequestBody @Valid AddUserData user) {
-        userRepository.save(new User(user));
+    public ResponseEntity<UserDataResponse> addUser(@RequestBody @Valid AddUserData userData, UriComponentsBuilder uri) {
+        User user = userRepository.save(new User(userData));
+
+        URI url = uri.path("/users/register/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(url).body(
+                new UserDataResponse(user.getId(), user.getTitle(), user.getBody())
+        );
+    }
+
+    // Metodo que retorna los datos ingresados para un registro
+    @GetMapping("/register/{id}")
+    public ResponseEntity<UserDataResponse> returnUserData(@PathVariable Long id) {
+        User user = userRepository.getReferenceById(id);
+
+        return ResponseEntity.ok(new UserDataResponse(user.getId(), user.getTitle(), user.getBody()));
     }
 
     @PostMapping("/register-users")
     @Transactional
-    public void addUserList(@RequestBody @Valid List<AddUserData> users) {
-        users.forEach(user -> userRepository.save(new User(user)));
+    public ResponseEntity<UserDataResponse> addUserList(@RequestBody @Valid List<AddUserData> users, UriComponentsBuilder uri) {
+        for (AddUserData addUser: users) {
+            User user = userRepository.save(new User(addUser));
+
+            URI url = uri.path("/patients/register-users/{id}").buildAndExpand(user.getId()).toUri();
+            return ResponseEntity.created(url).body(
+                    new UserDataResponse(user.getId(), user.getTitle(), user.getBody())
+            );
+        }
+        return null;
     }
 
     /*@GetMapping
@@ -38,15 +61,14 @@ public class UserController {
 
     // Get All Users
     @GetMapping
-    public Page<GetUserDataList> getUserList(Pageable page) {
-        return userRepository.findAll(page).map(GetUserDataList::new);
+    public ResponseEntity<Page<GetUserDataList>> getUserList(Pageable page) {
+        return ResponseEntity.ok(userRepository.findAll(page).map(GetUserDataList::new));
     }
 
     //Get Active Users
-
     @GetMapping("/get-active")
-    public Page<GetUserDataList> getActiveUserList(@PageableDefault(size = 4) Pageable pagination)  {
-        return userRepository.findByActiveTrue(pagination).map(GetUserDataList::new);
+    public ResponseEntity<Page<GetUserDataList>> getActiveUserList(@PageableDefault(size = 4) Pageable pagination)  {
+        return ResponseEntity.ok(userRepository.findByActiveTrue(pagination).map(GetUserDataList::new));
     }
 
     @PutMapping
@@ -55,9 +77,7 @@ public class UserController {
         User user = userRepository.getReferenceById(updateUser.id());
         user.updateUser(updateUser);
 
-        return ResponseEntity.ok(
-                new UserDataResponse(user.getId(), user.getTitle(), user.getBody())
-        );
+        return ResponseEntity.ok(new UserDataResponse(user.getId(), user.getTitle(), user.getBody()));
     }
 
     @DeleteMapping("/{id}")

@@ -1,11 +1,11 @@
-package med.jsrdev.api.patient;
+package med.jsrdev.api.domain.patient;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.jsrdev.api.address.AddressPatient;
+import med.jsrdev.api.domain.address.AddressPatient;
 
 @SuppressWarnings("all")
 @Table(name="patients")

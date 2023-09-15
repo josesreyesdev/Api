@@ -1,4 +1,4 @@
-package med.jsrdev.api.medic;
+package med.jsrdev.api.domain.medic;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

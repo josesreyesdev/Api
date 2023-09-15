@@ -2,7 +2,7 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.user.*;
+import med.jsrdev.api.domain.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

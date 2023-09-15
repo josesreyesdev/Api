@@ -2,8 +2,8 @@ package med.jsrdev.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.jsrdev.api.address.PatientAddressData;
-import med.jsrdev.api.patient.*;
+import med.jsrdev.api.domain.address.PatientAddressData;
+import med.jsrdev.api.domain.patient.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

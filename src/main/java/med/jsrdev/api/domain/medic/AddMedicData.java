@@ -1,11 +1,11 @@
-package med.jsrdev.api.medic;
+package med.jsrdev.api.domain.medic;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import med.jsrdev.api.address.MedicAddressData;
+import med.jsrdev.api.domain.address.MedicAddressData;
 
 public record AddMedicData(
         @NotBlank

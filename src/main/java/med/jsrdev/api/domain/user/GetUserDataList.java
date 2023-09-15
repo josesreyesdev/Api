@@ -1,4 +1,4 @@
-package med.jsrdev.api.user;
+package med.jsrdev.api.domain.user;
 
 public record GetUserDataList(Long id, Integer userId, String title, String body) {
     public GetUserDataList(User user) {

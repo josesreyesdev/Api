@@ -1,4 +1,4 @@
-package med.jsrdev.api.address;
+package med.jsrdev.api.domain.address;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

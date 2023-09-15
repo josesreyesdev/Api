@@ -1,4 +1,4 @@
-package med.jsrdev.api.medic;
+package med.jsrdev.api.domain.medic;
 
 public record GetMedicalDataList(Long id, String name, Specialty specialty, String document, String email) {
     public GetMedicalDataList(Medic medic) {

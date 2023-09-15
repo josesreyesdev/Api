@@ -1,6 +1,6 @@
-package med.jsrdev.api.patient;
+package med.jsrdev.api.domain.patient;
 
-import med.jsrdev.api.address.PatientAddressData;
+import med.jsrdev.api.domain.address.PatientAddressData;
 
 public record PatientDataResponse(
         Long id,

@@ -1,4 +1,4 @@
-package med.jsrdev.api.patient;
+package med.jsrdev.api.domain.patient;
 
 public record GetPatientDataList(Long id, String name, String email, String identityDocument) {
     public GetPatientDataList(Patient patient) {

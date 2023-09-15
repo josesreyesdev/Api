@@ -1,4 +1,4 @@
-package med.jsrdev.api.address;
+package med.jsrdev.api.domain.address;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

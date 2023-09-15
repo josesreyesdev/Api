@@ -1,17 +1,21 @@
-package med.jsrdev.api.address;
+package med.jsrdev.api.domain.address;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record MedicAddressData(
+public record PatientAddressData(
         @NotBlank
-        String street,
+        String urbanization,
         @NotBlank
         String district,
         @NotBlank
-        String city,
+        String postalCode,
+        @NotBlank
+        String complement,
         @NotNull
         Integer number,
         @NotBlank
-        String complement
+        Integer province,
+        @NotBlank
+        String city
 ) { }

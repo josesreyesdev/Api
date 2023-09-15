@@ -1,4 +1,4 @@
-package med.jsrdev.api.user;
+package med.jsrdev.api.domain.user;
 
 import jakarta.validation.constraints.NotNull;
 

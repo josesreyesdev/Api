@@ -4,18 +4,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record PatientAddressData(
-        @NotBlank
+        @NotBlank(message = "Urbanization is required")
         String urbanization,
-        @NotBlank
+        @NotBlank(message = "District is required")
         String district,
-        @NotBlank
+        @NotBlank(message = "PostalCode is required")
         String postalCode,
-        @NotBlank
+        @NotBlank(message = "Complement is required")
         String complement,
-        @NotNull
+        @NotNull(message = "Number is required")
         Integer number,
-        @NotBlank
+        @NotNull(message = "Province is required")
         Integer province,
-        @NotBlank
+        @NotBlank(message = "City is required")
         String city
 ) { }

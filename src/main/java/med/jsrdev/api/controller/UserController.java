@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
-@RequestMapping("/example-user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -23,7 +22,8 @@ public class UserController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<UserDataResponse> addUser(@RequestBody @Valid AddUserData userData, UriComponentsBuilder uri) {
+    public ResponseEntity<UserDataResponse> addUser(
+            @RequestBody @Valid AddUserData userData, UriComponentsBuilder uri) {
         User user = userRepository.save(new User(userData));
 
         URI url = uri.path("/users/register/{id}").buildAndExpand(user.getId()).toUri();
@@ -38,20 +38,6 @@ public class UserController {
         User user = userRepository.getReferenceById(id);
 
         return ResponseEntity.ok(new UserDataResponse(user.getId(), user.getTitle(), user.getBody()));
-    }
-
-    @PostMapping("/register-users")
-    @Transactional
-    public ResponseEntity<UserDataResponse> addUserList(@RequestBody @Valid List<AddUserData> users, UriComponentsBuilder uri) {
-        for (AddUserData addUser: users) {
-            User user = userRepository.save(new User(addUser));
-
-            URI url = uri.path("/patients/register-users/{id}").buildAndExpand(user.getId()).toUri();
-            return ResponseEntity.created(url).body(
-                    new UserDataResponse(user.getId(), user.getTitle(), user.getBody())
-            );
-        }
-        return null;
     }
 
     /*@GetMapping

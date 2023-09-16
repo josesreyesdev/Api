@@ -4,13 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AddUserData(
-        @NotNull
-        Long id,
-        @NotNull
+        @NotNull(message = "{userId.required}")
         Integer userId,
-        @NotBlank
+        @NotBlank(message = "{title.required}")
         String title,
-        @NotBlank
+        @NotBlank(message = "{body.required}")
         String body
 ) {
 }

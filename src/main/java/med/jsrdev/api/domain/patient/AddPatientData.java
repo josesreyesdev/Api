@@ -8,17 +8,17 @@ import jakarta.validation.constraints.Pattern;
 import med.jsrdev.api.domain.address.PatientAddressData;
 
 public record AddPatientData(
-        @NotBlank
+        @NotBlank(message = "{name.required}")
         String name,
-        @NotBlank
-        @Email
+        @NotBlank(message = "{email.required}")
+        @Email(message = "{email.invalid}")
         String email,
-        @NotBlank
-        @Pattern(regexp = "\\d{4,14}")
+        @NotBlank(message = "{identityDocument.required}")
+        @Pattern(regexp = "\\d{4,14}", message = "{identityDocument.invalid}")
         String identityDocument,
-        @NotBlank
+        @NotBlank(message = "{phone.required}")
         String phone,
-        @NotNull
+        @NotNull(message = "{address.required}")
         @Valid
         PatientAddressData address
 ) {

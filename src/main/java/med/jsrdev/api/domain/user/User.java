@@ -25,7 +25,6 @@ public class User {
 
 
         public User(AddUserData user) {
-                this.id = user.id();
                 this.userId = user.userId();
                 this.title = user.title();
                 this.body = user.body();

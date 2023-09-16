@@ -8,20 +8,21 @@ import jakarta.validation.constraints.Pattern;
 import med.jsrdev.api.domain.address.MedicAddressData;
 
 public record AddMedicData(
-        @NotBlank
+        //personalizar mensajes de error
+        @NotBlank(message = "Name is required")
         String name,
-        @NotBlank
-        @Email
+        @NotBlank(message = "Email is required")
+        @Email(message = "Email in invalid format")
         String email,
 
-        @NotBlank
+        @NotBlank(message = "Phone is required")
         String phone,
-        @NotBlank
-        @Pattern(regexp = "\\d{4,6}")
+        @NotBlank(message = "Document is required")
+        @Pattern(regexp = "\\d{4,6}", message = "Document in invalid format")
         String document,
-        @NotNull
+        @NotNull(message = "Specialty is required")
         Specialty specialty,
-        @NotNull
+        @NotNull (message = "Address is required")
         @Valid
         MedicAddressData address
 ) { }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
@@ -22,8 +21,8 @@ public class PatientController {
     private PatientRepository patientRepository;
 
     @PostMapping("/register")
-    @Transactional
-    public ResponseEntity<PatientDataResponse> addPatient(@RequestBody @Valid AddPatientData data, UriComponentsBuilder uri) {
+    public ResponseEntity<PatientDataResponse> addPatient(
+            @RequestBody @Valid AddPatientData data, UriComponentsBuilder uri) {
         Patient patient = patientRepository.save(new Patient(data));
 
         URI url = uri.path("/patients/register/{id}").buildAndExpand(patient.getId()).toUri();
@@ -36,18 +35,6 @@ public class PatientController {
         Patient patient = patientRepository.getReferenceById(id);
 
         return ResponseEntity.ok(responsePatientData(patient));
-    }
-
-    @PostMapping("/register-patients")
-    @Transactional
-    public ResponseEntity<PatientDataResponse> addPatientList(@RequestBody @Valid List<AddPatientData> patients, UriComponentsBuilder uri) {
-        for (AddPatientData addPatient: patients) {
-            Patient patient = patientRepository.save(new Patient(addPatient));
-
-            URI url = uri.path("/patients/register-patients/{id}").buildAndExpand(patient.getId()).toUri();
-            return ResponseEntity.created(url).body( responsePatientData( patient));
-        }
-        return null;
     }
 
     //Get all patients

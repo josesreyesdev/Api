@@ -1,4 +1,4 @@
-package med.jsrdev.api.infra;
+package med.jsrdev.api.infra.errors;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

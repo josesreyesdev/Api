@@ -15,13 +15,12 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/user-examples")
-public class UserController {
+public class UserExampleController {
 
     @Autowired
     private UserExampleRepository userRepository;
 
     @PostMapping("/register")
-    @Transactional
     public ResponseEntity<UserExampleDataResponse> addUser(
             @RequestBody @Valid AddUserExampleData userData, UriComponentsBuilder uri) {
         UserExample user = userRepository.save(new UserExample(userData));

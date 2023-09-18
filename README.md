@@ -1,7 +1,7 @@
 # 🚀 Api
 > Creation of an API, CRUD, Validations, Pagination and Order pagination.
 > 
-> Applying API best practices, Error handling, Authentication and Authorization and JWT Tokens.
+> Applying API best practices, Error handling, Authentication, Protection against attacks(CSRF, clickjacking) Authorization and JWT Tokens.
 
 ## Developing
 

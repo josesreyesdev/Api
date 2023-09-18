@@ -1,4 +1,4 @@
-package med.jsrdev.api.domain.user;
+package med.jsrdev.api.domain.user_example;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,13 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @SuppressWarnings("all")
-@Table(name="users")
-@Entity(name = "User")
+@Table(name="user_examples")
+@Entity(name = "UserExample")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")
-public class User {
+public class UserExample {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -24,14 +24,14 @@ public class User {
         private Boolean active;
 
 
-        public User(AddUserData user) {
+        public UserExample(AddUserExampleData user) {
                 this.userId = user.userId();
                 this.title = user.title();
                 this.body = user.body();
                 this.active = true;
         }
 
-        public void updateUser(UpdateUserData updateUser) {
+        public void updateUser(UpdateUserExampleData updateUser) {
                 if (updateUser.title() != null) {
                         this.title = updateUser.title();
                 }

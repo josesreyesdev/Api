@@ -45,7 +45,6 @@ public class MedicController {
         /*medicList.forEach(medic -> medicRepository.save(new Medic(medic))); */
         for (AddMedicData addMedic : medicList) {
             Medic medic = medicRepository.save(new Medic(addMedic));
-
             URI url = uri.path("/medics/register-medics/{id}").buildAndExpand(medic.getId()).toUri();
             return ResponseEntity.created(url).body(responseMedicData(medic));
         }

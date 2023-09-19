@@ -4,3 +4,9 @@ la ejecucion al crear una migracion incompleta accedemos a la BD y ejecutamos el
 =>  delete from flyway_schema_history where success = 0;
 
 Está se usa para eliminar de la tabla flyway todas las migraciones cuya ejecución falló.
+
+
+2.- Exportar la variable JWT_SECRET o tambien llamado variable de ambiente en la terminal
+==> export JWT_SECRET=123456  # Exportar variable
+==> echo $JWT_SECRET          # Imprimir variable
+==> unset JWT_SECRET          # Borrar variable

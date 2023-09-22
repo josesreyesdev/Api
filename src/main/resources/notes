@@ -2,6 +2,7 @@ Para solucionar error en una migracion(sentencia sql incorrecta)o no paramos
 la ejecucion al crear una migracion incompleta accedemos a la BD y ejecutamos el comando:
 
 =>  delete from flyway_schema_history where success = 0;
+=> table especifica => DELETE FROM flyway_schema_history WHERE version = '8' AND success = 1;
 
 Está se usa para eliminar de la tabla flyway todas las migraciones cuya ejecución falló.
 

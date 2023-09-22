@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record ScheduleConsultData(Long id, @NotNull Long idPatient, Long idMedic, @NotNull @Future LocalDateTime date) {
+public record AddScheduleConsultData(Long id, @NotNull Long idPatient, Long idMedic, @NotNull @Future LocalDateTime date) {
 }

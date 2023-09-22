@@ -30,13 +30,25 @@ public class ConsultScheduleService {
         }
 
         var patient = patientRepository.findById(data.idPatient()).get();
-        var medic = selectMedic(data);
+        var medic = selectRandomMedic(data);
 
         var consult = new Consult(null, medic, patient, data.date());
         consultRepository.save(consult);
     }
 
-    private Medic selectMedic(AddScheduleConsultData data) {
-        return null;
+    private Medic selectRandomMedic(AddScheduleConsultData data) {
+
+        // validar que id medico no sea nulo
+        if (data.idMedic() != null) {
+            return medicRepository.getReferenceById(data.idMedic());
+        }
+
+        //valida la especialidad
+        if (data.specialty() == null) {
+            throw new ValidationIntegrity("Please, select the Medic Specialty");
+        }
+
+
+        return medicRepository.selectMedicWithSpecialtyInDate(data.specialty(), data.date());
     }
 }

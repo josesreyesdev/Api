@@ -29,6 +29,9 @@ public class ConsultScheduleService {
             throw new ValidationIntegrity("Medic ID not found");
         }
 
+        // Validations
+
+
         var patient = patientRepository.findById(data.idPatient()).get();
         var medic = selectRandomMedic(data);
 

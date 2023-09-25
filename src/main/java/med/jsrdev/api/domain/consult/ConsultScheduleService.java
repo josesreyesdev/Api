@@ -1,11 +1,14 @@
 package med.jsrdev.api.domain.consult;
 
+import med.jsrdev.api.domain.consult.validations.ValidatedQueries;
 import med.jsrdev.api.domain.medic.Medic;
 import med.jsrdev.api.domain.medic.MedicRepository;
 import med.jsrdev.api.domain.patient.PatientRepository;
 import med.jsrdev.api.infra.exceptions.ValidationIntegrity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ConsultScheduleService {
@@ -19,6 +22,9 @@ public class ConsultScheduleService {
     @Autowired
     private ConsultRepository consultRepository;
 
+    @Autowired
+    List<ValidatedQueries> validators;
+
     public void schedule(AddScheduleConsultData data) {
 
         if (patientRepository.findById(data.idPatient()).isPresent()) {
@@ -30,6 +36,7 @@ public class ConsultScheduleService {
         }
 
         // Validations
+        validators.forEach( v -> v.validate(data));
 
 
         var patient = patientRepository.findById(data.idPatient()).get();

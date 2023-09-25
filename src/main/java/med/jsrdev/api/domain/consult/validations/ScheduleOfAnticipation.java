@@ -2,11 +2,13 @@ package med.jsrdev.api.domain.consult.validations;
 
 import jakarta.validation.ValidationException;
 import med.jsrdev.api.domain.consult.AddScheduleConsultData;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class ScheduleOfAnticipation {
+@Component
+public class ScheduleOfAnticipation implements ValidatedQueries {
     public void validate(AddScheduleConsultData data) {
 
         // Consultas deben programarse con al menos 30 minutos de anticipacion

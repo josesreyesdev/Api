@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ActiveMedic {
+public class ActiveMedic implements ValidatedQueries {
     // No permitir agendar citas con medicos inactivos
 
     @Autowired

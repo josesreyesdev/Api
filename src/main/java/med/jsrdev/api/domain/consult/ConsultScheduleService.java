@@ -25,13 +25,13 @@ public class ConsultScheduleService {
     @Autowired
     List<ValidatedQueries> validators;
 
-    public void schedule(AddScheduleConsultData data) {
+    public ConsultDetailData schedule(AddScheduleConsultData data) {
 
-        if (patientRepository.findById(data.idPatient()).isPresent()) {
+        if (patientRepository.findById(data.idPatient()).isEmpty()) {
             throw new ValidationIntegrity("Patient ID not found");
         }
 
-        if (data.idMedic() != null && medicRepository.existsById(data.idMedic())) {
+        if (data.idMedic() != null && !medicRepository.existsById(data.idMedic())) {
             throw new ValidationIntegrity("Medic ID not found");
         }
 
@@ -41,9 +41,14 @@ public class ConsultScheduleService {
 
         var patient = patientRepository.findById(data.idPatient()).get();
         var medic = selectRandomMedic(data);
+        if (medic == null) {
+            throw new ValidationIntegrity("There are no Medics available for this schedule and specialty");
+        }
 
         var consult = new Consult(null, medic, patient, data.date());
         consultRepository.save(consult);
+
+        return new ConsultDetailData(consult);
     }
 
     private Medic selectRandomMedic(AddScheduleConsultData data) {

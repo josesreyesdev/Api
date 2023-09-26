@@ -18,7 +18,7 @@ public class PatientWithoutConsult implements ValidatedQueries {
         var lastSchedule = data.date().withHour(18);
 
         // calcular que el paciente no tenga una consulta en el rango de 7 a 18 hrs.
-        var patientWithConsult = repository.existByPatientIdAndDateBetween(data.idPatient(), firstSchedule, lastSchedule);
+        var patientWithConsult = repository.existsByPatientIdAndDateBetween(data.idPatient(), firstSchedule, lastSchedule);
 
         if (patientWithConsult) {
             throw new ValidationException("El Paciente ya tiene una consulta para este dia");

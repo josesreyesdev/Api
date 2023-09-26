@@ -18,7 +18,7 @@ public class MedicWithConsult implements ValidatedQueries {
             return;
         }
 
-        var medicWithConsult = repository.existByIdMedicAndDate(data.idMedic(), data.date());
+        var medicWithConsult = repository.existsByMedicIdAndDate(data.idMedic(), data.date());
 
         if (medicWithConsult) {
             throw new ValidationException("El medico ya tiene una consulta en este horario");

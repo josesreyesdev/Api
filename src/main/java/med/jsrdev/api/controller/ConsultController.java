@@ -26,8 +26,8 @@ public class ConsultController {
     @Transactional
     public ResponseEntity<ConsultDetailData> schedule(@RequestBody @Valid AddScheduleConsultData data) {
 
-        service.schedule(data);
+        var response = service.schedule(data);
 
-        return ResponseEntity.ok(new ConsultDetailData(null, null, null, null));
+        return ResponseEntity.ok(response);
     }
 }

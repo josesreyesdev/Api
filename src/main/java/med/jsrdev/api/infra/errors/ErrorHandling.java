@@ -1,6 +1,8 @@
 package med.jsrdev.api.infra.errors;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ValidationException;
+import med.jsrdev.api.infra.exceptions.ValidationIntegrity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,5 +32,17 @@ public class ErrorHandling {
         public ValidationErrorData(FieldError fieldError) {
             this(fieldError.getField(), fieldError.getDefaultMessage());
         }
+    }
+
+    // Error en validaciones de integridad
+    @ExceptionHandler(ValidationIntegrity.class)
+    public ResponseEntity<String> errorHandlerIntegrity403(Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    // Error en validaciones de integridad
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> errorHandlerBusinessRules403(Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

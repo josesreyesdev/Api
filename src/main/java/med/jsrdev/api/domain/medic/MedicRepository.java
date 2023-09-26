@@ -21,4 +21,9 @@ public interface MedicRepository extends JpaRepository<Medic, Long> {
         LIMIT 1
         """)
     Medic selectMedicWithSpecialtyInDate(Specialty specialty, LocalDateTime date);
+
+    @Query("""
+        SELECT m.active FROM Medic m WHERE m.id = :idMedic
+    """)
+    Boolean findActiveMedicById(Long idMedic);
 }

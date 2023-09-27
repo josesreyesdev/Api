@@ -1,5 +1,6 @@
 package med.jsrdev.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.jsrdev.api.domain.address.MedicAddressData;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/medics")
+@SecurityRequirement(name = "bearer-key")
 public class MedicController {
 
     @Autowired

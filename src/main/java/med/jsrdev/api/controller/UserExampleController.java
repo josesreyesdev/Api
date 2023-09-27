@@ -1,5 +1,6 @@
 package med.jsrdev.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.jsrdev.api.domain.user_example.*;
@@ -15,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/user-examples")
+@SecurityRequirement(name = "bearer-key")
 public class UserExampleController {
 
     @Autowired

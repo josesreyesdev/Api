@@ -1,5 +1,6 @@
 package med.jsrdev.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.jsrdev.api.domain.consult.ConsultDetailData;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @ResponseBody
 @RequestMapping("/consults")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultController {
 
     @Autowired

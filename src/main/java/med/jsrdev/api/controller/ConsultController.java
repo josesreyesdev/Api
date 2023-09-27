@@ -5,13 +5,11 @@ import jakarta.validation.Valid;
 import med.jsrdev.api.domain.consult.ConsultDetailData;
 import med.jsrdev.api.domain.consult.ConsultScheduleService;
 import med.jsrdev.api.domain.consult.AddScheduleConsultData;
+import med.jsrdev.api.domain.consult.DatosCancelamientoConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @ResponseBody
@@ -24,10 +22,18 @@ public class ConsultController {
     //agendar
     @PostMapping
     @Transactional
-    public ResponseEntity<ConsultDetailData> schedule(@RequestBody @Valid AddScheduleConsultData data) {
+    public ResponseEntity<ConsultDetailData> schedule(@RequestBody @Valid AddScheduleConsultData data) /*throws ValidationIntegrity */ {
 
         var response = service.schedule(data);
 
         return ResponseEntity.ok(response);
+    }
+
+    //cancelar
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity<Void> cancel(@RequestBody @Valid DatosCancelamientoConsulta data) {
+        service.cancel(data);
+        return ResponseEntity.noContent().build();
     }
 }

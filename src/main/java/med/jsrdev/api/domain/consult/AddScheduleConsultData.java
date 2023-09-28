@@ -6,5 +6,5 @@ import med.jsrdev.api.domain.medic.Specialty;
 
 import java.time.LocalDateTime;
 
-public record AddScheduleConsultData(Long id, @NotNull Long idPatient, Long idMedic, @NotNull @Future LocalDateTime date, Specialty specialty) {
+public record AddScheduleConsultData(@NotNull Long idPatient, Long idMedic, @NotNull @Future LocalDateTime date, Specialty specialty) {
 }

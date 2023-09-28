@@ -35,6 +35,7 @@ class MedicRepositoryTest {
     @DisplayName("Deberia retornar nulo cuando el medico se encuentre en consulta con otro paciente en ese horario")
     void selectMedicWithSpecialtyInDateScenario1() {
 
+        //GIVEN
         var nextMondayAt10am = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .atTime(10, 0);
@@ -44,9 +45,11 @@ class MedicRepositoryTest {
         var patient = addPatient("jose Juan", "josejuan@example.com", "12321");
         addConsult(medic, patient, nextMondayAt10am);
 
+        //WHEN
         // medico libre
         var freeDoctor = medicRepository.selectMedicWithSpecialtyInDate(Specialty.CARDIOLOGIA, nextMondayAt10am);
 
+        // THEN
         assertThat(freeDoctor).isNull();
     }
 
@@ -54,6 +57,7 @@ class MedicRepositoryTest {
     @DisplayName("Deberia retornar veradero cuando el medico registrado se encuentre libre en el horario seleccionado")
     void selectMedicWithSpecialtyInDateScenario2() {
 
+        //GIVEN
         var nextMondayAt10am = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .atTime(10, 0);
@@ -61,9 +65,11 @@ class MedicRepositoryTest {
         // registrar un medico
         var medic = addMedic("Juan P", "juanp@example.com", "12443", Specialty.CARDIOLOGIA);
 
+        //WHEN
         // medico libre
         var freeDoctor = medicRepository.selectMedicWithSpecialtyInDate(Specialty.CARDIOLOGIA, nextMondayAt10am);
 
+        //THEN
         assertThat(freeDoctor).isEqualTo(medic);
     }
 

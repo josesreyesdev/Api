@@ -1,0 +1,2 @@
+INSERT INTO `jsrdev_api`.`patients` (`id`,`name`,`email`,`identity_document`,`phone`,`urbanization`, `district`, `postal_code`,`complement`,`number`, `province`,`city`, `active`)
+VALUES ('5', 'Jose S Reyes', 'josesreyes@example.com', '123412', '1928371123', 'Urb yes', 'Distrito 01', '38000','Complement jsr', '124 - A', 'Provincia jsr 09', 'Celaya Gto.', '1')

@@ -11,3 +11,26 @@ Está se usa para eliminar de la tabla flyway todas las migraciones cuya ejecuci
 ==> export JWT_SECRET=123456  # Exportar variable
 ==> echo $JWT_SECRET          # Imprimir variable
 ==> unset JWT_SECRET          # Borrar variable
+
+
+Controller => API
+Services => Reglas de Negocio
+Repository => Queries
+
+TEST
+----------------------------------------------application-test.yml--------------------------------------------------
+    spring:
+      datasource:
+        url: jdbc:mysql://localhost:3306/jsrdev_api_test?createDatabaseIfNotExist=true&serverTimezone=UTC
+        username: root
+        password: 123456
+
+
+    ## Para usar la DB en memoria configurar lo siguiente:
+    # spring.datasource.url=jdbc:h2:mem:testdb
+    # spring.datasource.driverClassName=org.h2.Driver
+    # spring.datasource.username=sa
+    # spring.datasource.password=password
+
+    ## No olvidar borrar la anotacion @AutoConfigureTestDatabase en la clase de prueba MedicRepositoryTest
+------------------------------------------------------------------------------------------------------------------

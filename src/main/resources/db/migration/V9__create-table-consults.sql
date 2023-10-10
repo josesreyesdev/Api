@@ -2,7 +2,8 @@ create table consults(
     id bigint not null auto_increment,
     id_medic bigint not null,
     id_patient bigint not null,
-    date datetime not null ,
+    date datetime not null,
+    motivo_cancel varchar(200),
 
     primary key(id),
 

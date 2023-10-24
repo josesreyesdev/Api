@@ -20,7 +20,7 @@ import java.time.temporal.TemporalAdjusters;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest //Busca una DB en memoria
+@DataJpaTest //Busca una DB en memoria que permite acceso a la BD y consultas
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // Indico que BD utilizaré para pruebas, si utilizo una en fisico eliminar esta linea
 @ActiveProfiles("test") //Indico que perfil utilizar, en este caso el de test
 class MedicRepositoryTest {

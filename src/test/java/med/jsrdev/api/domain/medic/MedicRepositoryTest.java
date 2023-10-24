@@ -18,11 +18,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles
+@DataJpaTest //Busca una DB en memoria que permite acceso a la BD y consultas
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // Indico que BD utilizaré para pruebas, si utilizo una en fisico eliminar esta linea
+@ActiveProfiles("test") //Indico que perfil utilizar, en este caso el de test
 class MedicRepositoryTest {
 
     @Autowired
@@ -32,45 +32,47 @@ class MedicRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    @DisplayName("Deberia retornar nulo cuando el medico se encuentre en consulta con otro paciente en ese horario")
+    @DisplayName("Deberia retornar null cuando el medico se encuentre en consulta con otro paciente en ese horario")
     void selectMedicWithSpecialtyInDateScenario1() {
 
-        //GIVEN
-        var nextMondayAt10am = LocalDate.now()
+        // GIVEN
+        var nexMondayAt10H = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
-                .atTime(10, 0);
+                .atTime(10, 0); // 10 am
 
-        // registrar un medico, un paciente y una consulta
+        /* registrar un medico, paciente y una consulta */
         var medic = addMedic("Juan P", "juanp@example.com", "12443", Specialty.CARDIOLOGIA);
-        var patient = addPatient("jose Juan", "josejuan@example.com", "12321");
-        addConsult(medic, patient, nextMondayAt10am);
+        var patient = addPatient("Paciente Prueba", "patienttest@example.com", "213242");
+        addConsult(medic, patient, nexMondayAt10H);
 
-        //WHEN
-        // medico libre
-        var freeDoctor = medicRepository.selectMedicWithSpecialtyInDate(Specialty.CARDIOLOGIA, nextMondayAt10am);
+        // WHEN
+        // Ver  si el medico disponible
+        var freeMedic = medicRepository.selectMedicWithSpecialtyInDate(
+                Specialty.CARDIOLOGIA, nexMondayAt10H
+        );
 
         // THEN
-        assertThat(freeDoctor).isNull();
+        assertThat(freeMedic).isNull();
     }
 
     @Test
-    @DisplayName("Deberia retornar veradero cuando el medico registrado se encuentre libre en el horario seleccionado")
+    @DisplayName("Retorna un medico cuando si se encuentra disponible para ese horario")
     void selectMedicWithSpecialtyInDateScenario2() {
 
-        //GIVEN
-        var nextMondayAt10am = LocalDate.now()
+        // GIVEN
+        var nexMondayAt10H = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
-                .atTime(10, 0);
+                .atTime(10, 0); // 10 am
 
-        // registrar un medico
         var medic = addMedic("Juan P", "juanp@example.com", "12443", Specialty.CARDIOLOGIA);
 
-        //WHEN
-        // medico libre
-        var freeDoctor = medicRepository.selectMedicWithSpecialtyInDate(Specialty.CARDIOLOGIA, nextMondayAt10am);
+        // WHEN
+        var freeMedic = medicRepository.selectMedicWithSpecialtyInDate(
+                Specialty.CARDIOLOGIA, nexMondayAt10H
+        );
 
-        //THEN
-        assertThat(freeDoctor).isEqualTo(medic);
+        // THEN
+        assertThat(freeMedic).isEqualTo(medic);
     }
 
     private void addConsult(Medic medic, Patient patient, LocalDateTime date) {
@@ -103,7 +105,11 @@ class MedicRepositoryTest {
 
     private MedicAddressData medicAddressData() {
         return new MedicAddressData(
-                "street loca", "district 32", "City City", 23, "Complement 12"
+                "street loca",
+                "district 32",
+                "City City",
+                23,
+                "Complement 12"
         );
     }
 

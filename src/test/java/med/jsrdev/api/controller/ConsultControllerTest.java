@@ -24,20 +24,17 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest // Permite utilizar conponentes dentro del contexto de spring
+@AutoConfigureMockMvc // Conf. los componentes necesarios para la simulación de una peticion para ese controlador,
 @AutoConfigureJsonTesters
 class ConsultControllerTest {
 
-    // Simular
     @Autowired
     private MockMvc mvc;
 
-    // retorno de json
     @Autowired
     private JacksonTester<AddScheduleConsultData> addScheduleConsultDataJacksonTester;
 
-    // transformar el json a objeto java y viceversa
     @Autowired
     private JacksonTester<ConsultDetailData> consultDetailDataJacksonTester;
 
@@ -45,44 +42,43 @@ class ConsultControllerTest {
     private ConsultScheduleService consultScheduleService;
 
     @Test
-    @DisplayName("Deberia retornar estado http 404 cuando los datos ingresados sean invalidos")
-    @WithMockUser
+    @DisplayName("Deberia retornar estado http 400, cuando datos ingresados sean invalidos")
+    @WithMockUser //agregar dependencia
     void scheduleScenario1() throws Exception {
 
-        //GIVEN AND WHEN
+        //Given  // When
         var response = mvc.perform(post("/consults")).andReturn().getResponse();
 
-        //THEN
+        //Then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
-    @DisplayName("Deberia retornar un json estado http 200 cuando los datos ingresados sean validos")
-    @WithMockUser
+    @DisplayName("Deberia retornar estado http 200, cuando datos ingresados sean validos")
+    @WithMockUser //agregar dependencia
     void scheduleScenario2() throws Exception {
 
-        //GIVEN
+        //Given
         var date = LocalDateTime.now().plusHours(1);
         var specialty = Specialty.CARDIOLOGIA;
-        var datosDetalleCosulta = new ConsultDetailData(null, 2L, 2L, date);
+        var data = new ConsultDetailData(null, 2L, 5L, date);
 
-        // WHEN
-
-        when(consultScheduleService.schedule(any())).thenReturn(datosDetalleCosulta);
+        // When
+        when(consultScheduleService.schedule(any())).thenReturn( data);
 
         var response = mvc.perform(post("/consults")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                         addScheduleConsultDataJacksonTester.write(
-                                new AddScheduleConsultData(2L, 2L, date, specialty)
+                                new AddScheduleConsultData(2L, 5L, date, specialty)
                         ).getJson()
                 )
         ).andReturn().getResponse();
 
-        //THEN
+        //Then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 
-        var jsonEsperado = consultDetailDataJacksonTester.write(datosDetalleCosulta).getJson();
+        var jsonEsperado = consultDetailDataJacksonTester.write(data).getJson();
 
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
     }
